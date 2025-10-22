@@ -95,3 +95,15 @@ end
 ```
 
 # Change local base num. to your base num.
+
+-- destroying the teleport / a.c.
+
+```
+local removed = 0
+for _, obj in ipairs(workspace:GetDescendants()) do
+	if obj.Name == "PlotTeritory" or obj.Name == "PlotTeritory2" then
+		obj:Destroy()
+		removed = removed + 1
+	end
+end
+```

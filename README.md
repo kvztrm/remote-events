@@ -52,45 +52,42 @@ game:GetService("ReplicatedStorage"):WaitForChild("ncxyzero_bridgenet2-fork@1.1.
 
 ```
 while wait() do
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local remote = ReplicatedStorage:WaitForChild("ncxyzero_bridgenet2-fork@1.1.5"):WaitForChild("dataRemoteEvent")
+	local ReplicatedStorage = game:GetService("ReplicatedStorage")
+	local remote = ReplicatedStorage:WaitForChild("ncxyzero_bridgenet2-fork@1.1.5"):WaitForChild("dataRemoteEvent")
 
-local baseNumber = "2"
+	local baseNumber = "1"
 
-for i = 1, 12 do
-	local success, err = pcall(function()
-		local button = workspace
-			:WaitForChild("Bases")
-			:WaitForChild(baseNumber)
-			:WaitForChild("PlotSlots")
-			:WaitForChild("Slot" .. i)
-			:WaitForChild("ClaimButton")
-			:WaitForChild("Button")
-
-		remote:FireServer({ button, "\023" })
-	end)
-
-	if not success then
-		warn("Slot" .. i .. " failed: " .. err)
+	-- Remove PlotTeritory and PlotTeritory2 objects
+	for _, obj in ipairs(workspace:GetDescendants()) do
+		if obj.Name == "PlotTeritory" or obj.Name == "PlotTeritory2" then
+			obj:Destroy()
+		end
 	end
 
-	wait(0.1)
-end
+	for i = 1, 12 do
+		pcall(function()
+			local button = workspace
+				:WaitForChild("Bases")
+				:WaitForChild(baseNumber)
+				:WaitForChild("PlotSlots")
+				:WaitForChild("Slot" .. i)
+				:WaitForChild("ClaimButton")
+				:WaitForChild("Button")
 
--- Fire LockgateButton
-local success, err = pcall(function()
-	local lockButton = workspace
-		:WaitForChild("Bases")
-		:WaitForChild(baseNumber)
-		:WaitForChild("LockgateButton")
-		:WaitForChild("Button")
+			remote:FireServer({ button, "\023" })
+		end)
+		wait(0.1)
+	end
 
-	remote:FireServer({ lockButton, "\022" })
-end)
+	pcall(function()
+		local lockButton = workspace
+			:WaitForChild("Bases")
+			:WaitForChild(baseNumber)
+			:WaitForChild("LockgateButton")
+			:WaitForChild("Button")
 
-if not success then
-	warn("LockgateButton failed: " .. err)
-end
+		remote:FireServer({ lockButton, "\022" })
+	end)
 end
 ```
 
